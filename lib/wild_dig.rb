@@ -1,9 +1,14 @@
 require 'wild_dig/version'
 require 'byebug'
 
-class Hash
+#{a: {b: {c: true}}}.wild_dig(:a, :b)
+module WildDig
   WILDCARD = :*.freeze
-  def wild_dig(*keys)
-    return dig(*keys) unless keys.include?(WILDCARD)
+  extend self
+  def dig(collection, *keys)
+    return collection.dig(*keys) unless keys.include?(WILDCARD)
+
+    value = collection[keys.shift]
+    (keys.empty? || value.nil?) ? value : dig(value, *keys)
   end
 end
