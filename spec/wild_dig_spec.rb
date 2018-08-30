@@ -1,9 +1,33 @@
 RSpec.describe WildDig do
-  it "has a version number" do
-    expect(WildDig::VERSION).not_to be nil
+  let(:hash_1) do
+    {
+      a: {
+        b: {
+          d: 'd',
+          e: 'e'
+        }
+      }
+    }
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  let(:hash_2) do
+    {
+      a: {
+        b: {
+          d: 'd',
+          e: 'e'
+        },
+        c: 'c'
+      }
+    }
+  end
+
+  it 'digs regularly' do
+    expect(WildDig.dig(hash_1, :a, :b, :d)).to eq('d')
+    expect(WildDig.dig(hash_1, :a, :b)).to eq(d: 'd', e: 'e')
+  end
+
+  it 'digs wildly' do
+    expect(WildDig.dig(hash_1, :a, :*, :d)).to eq('d')
   end
 end

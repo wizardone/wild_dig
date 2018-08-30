@@ -1,14 +1,23 @@
 require 'wild_dig/version'
 require 'byebug'
 
-#{a: {b: {c: true}}}.wild_dig(:a, :b)
 module WildDig
   WILDCARD = :*.freeze
   extend self
   def dig(collection, *keys)
-    return collection.dig(*keys) unless keys.include?(WILDCARD)
+    #return collection.dig(*keys) unless keys.include?(WILDCARD)
 
-    value = collection[keys.shift]
-    (keys.empty? || value.nil?) ? value : dig(value, *keys)
+    current_key = keys.shift
+    if current_key == WILDCARD
+      #Do wildcard magic
+      # Why does it not work with each. FIND OUT!
+      collection.map do |key, value|
+        (keys.empty? || value.nil?) ? value : dig(value, *keys)
+      end
+    else
+      #Do regular magic
+      value = collection[current_key]
+      (keys.empty? || value.nil?) ? value : dig(value, *keys)
+    end
   end
 end
