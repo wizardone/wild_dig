@@ -4,20 +4,21 @@ require 'byebug'
 module WildDig
   WILDCARD = :*.freeze
   extend self
-  def dig(collection, *keys)
+  def dig(collection, *keys, called: nil)
     #return collection.dig(*keys) unless keys.include?(WILDCARD)
 
     current_key = keys.shift
     if current_key == WILDCARD
-      #Do wildcard magic
-      # Why does it not work with each. FIND OUT!
-      collection.map do |key, value|
-        (keys.empty? || value.nil?) ? value : dig(value, *keys)
-      end
+      if keys.empty?
+        collection.map { |key, value| value }
+      else
+        collection.map { |key, value| dig(value, *keys, called: true) }
+      end.first
     else
-      #Do regular magic
-      value = collection[current_key]
-      (keys.empty? || value.nil?) ? value : dig(value, *keys)
+      return collection unless collection.respond_to?(:dig)
+      result = collection.dig(current_key)
+      return result if keys.empty?
+      dig(result, *keys)
     end
   end
 end

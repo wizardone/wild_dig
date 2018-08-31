@@ -2,10 +2,7 @@ RSpec.describe WildDig do
   let(:hash_1) do
     {
       a: {
-        b: {
-          d: 'd',
-          e: 'e'
-        }
+        b: { d: 'd', e: 'e' }
       }
     }
   end
@@ -13,10 +10,7 @@ RSpec.describe WildDig do
   let(:hash_2) do
     {
       a: {
-        b: {
-          d: 'd',
-          e: 'e'
-        },
+        b: { d: 'd', e: 'e'},
         c: 'c'
       }
     }
@@ -28,6 +22,7 @@ RSpec.describe WildDig do
   end
 
   it 'digs wildly' do
-    expect(WildDig.dig(hash_1, :a, :*, :d)).to eq('d')
+    expect(WildDig.dig(hash_2, :a, :*, :e)).to eq('e')
+    expect(WildDig.dig(hash_2, :a, :*, :d)).to eq('d')
   end
 end
