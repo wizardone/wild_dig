@@ -10,7 +10,8 @@ module WildDig
     current_key = keys.shift
     if current_key == WILDCARD
       #Do wildcard magic
-      collection.each do |key, value|
+      # Why does it not work with each. FIND OUT!
+      collection.map do |key, value|
         (keys.empty? || value.nil?) ? value : dig(value, *keys)
       end
     else
