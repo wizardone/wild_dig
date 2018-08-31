@@ -6,7 +6,6 @@ module WildDig
   extend self
   def dig(collection, *keys, called: nil)
     #return collection.dig(*keys) unless keys.include?(WILDCARD)
-
     current_key = keys.shift
     if current_key == WILDCARD
       if keys.empty?
