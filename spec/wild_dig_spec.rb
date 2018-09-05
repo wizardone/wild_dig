@@ -33,6 +33,16 @@ RSpec.describe WildDig do
       }
     }
   end
+  let(:hash_5) do
+    {
+      a: 'a',
+      b: [
+        {c: 'c1', d: 'd1'},
+        {c: 'c2', d: 'd2'},
+        {c: 'c3', d: 'd3'},
+      ]
+    }
+  end
 
   it 'digs regularly' do
     expect(WildDig.dig(hash_1, :a, :b, :d)).to eq('d')
@@ -50,5 +60,9 @@ RSpec.describe WildDig do
 
     expect(WildDig.dig(hash_4, :a, :c)).to eq(['c1', 'c2', 'c3'])
     expect(WildDig.dig(hash_4, :*, :c)).to eq(['c1', 'c2', 'c3'])
+  end
+
+  it 'digs wildly through array with multiple objects' do
+    #expect(WildDig.dig(hash_5, :b, :*, :d)).to eq(['d1', 'd2', 'd3'])
   end
 end
