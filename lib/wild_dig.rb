@@ -9,7 +9,7 @@ module WildDig
   def dig(collection, *keys)
     return collection unless collection.respond_to?(:dig)
     return collection.dig(*keys) unless keys.include?(WILDCARD)
-    #TODO deep clone the collection?
+
     new_collection = deep_clone(collection)
     current_key = keys.shift
     if current_key == WILDCARD
@@ -37,8 +37,18 @@ module WildDig
   end
 
   def deep_clone(collection)
+    return collection unless collection.respond_to?(:each)
+
     {}.tap do |new_collection|
       collection.each do |key, value|
+        value = case value
+                when Hash
+                  deep_clone(value)
+                when Array
+                  value.map { |element| deep_clone(element) }
+                else
+                  value
+                end
         new_collection[key] = value
       end
     end
