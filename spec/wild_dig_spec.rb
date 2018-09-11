@@ -38,8 +38,18 @@ RSpec.describe WildDig do
       a: 'a',
       b: [
         {c: 'c1', d: 'd1'},
-        {c: 'c2', d: 'd2'},
-        {c: 'c3', d: 'd3'},
+        {f: 'c2', d: 'd2'},
+        {g: 'c3', d: 'd3'},
+      ]
+    }
+  end
+  let(:hash_6) do
+    {
+      a: 'a',
+      b: [
+        {c: 'c1', d: 'd1'},
+        {f: 'c2', x: 'x'},
+        {g: 'c3', d: 'd3'},
       ]
     }
   end
@@ -63,6 +73,7 @@ RSpec.describe WildDig do
   end
 
   it 'digs wildly through array with multiple objects' do
-    #expect(WildDig.dig(hash_5, :b, :*, :d)).to eq(['d1', 'd2', 'd3'])
+    expect(WildDig.dig(hash_5, :b, :*, :d)).to eq(['d1', 'd2', 'd3'])
+    expect(WildDig.dig(hash_6, :b, :*, :d)).to eq(['d1', 'd3'])
   end
 end

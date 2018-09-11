@@ -11,9 +11,10 @@ module WildDig
     return collection.dig(*keys) unless keys.include?(WILDCARD)
 
     new_collection = deep_clone(collection)
+
     current_key = keys.shift
     if current_key == WILDCARD
-      wildcard(new_collection, keys)
+      wildcard(new_collection, current_key, keys)
     else
       normal(new_collection, current_key, keys)
     end
@@ -21,13 +22,18 @@ module WildDig
 
   private
 
-  def wildcard(collection, keys)
+  def wildcard(collection, current_key, keys)
     if keys.empty?
       collection.map { |key, value| value }
     else
       # Find a way to transform the collection here
-      collection.map { |key, value| dig(value, *keys) }
-    end.first
+      # Unify a hash and array for iteration
+      if collection.is_a?(Hash)
+        collection.map { |key, value| dig(value, *keys) }.first
+      elsif collection.is_a?(Array)
+        collection.map { |key, _value| dig(key, *keys) }.reject(&:nil?)
+      end
+    end
   end
 
   def normal(collection, current_key, keys)
@@ -37,20 +43,19 @@ module WildDig
   end
 
   def deep_clone(collection)
-    return collection unless collection.respond_to?(:each)
+    return collection.dup unless collection.respond_to?(:each)
 
-    {}.tap do |new_collection|
-      collection.each do |key, value|
-        value = case value
-                when Hash
-                  deep_clone(value)
-                when Array
-                  value.map { |element| deep_clone(element) }
-                else
-                  value
-                end
-        new_collection[key] = value
+    case collection
+    when Hash
+      {}.tap do |new_collection|
+        collection.each do |key, value|
+          new_collection[key] = deep_clone(value)
+        end
       end
+    when Array
+      collection.map { |el| deep_clone(el) }
+    else
+      raise 'What are you doing?'
     end
   end
 end
