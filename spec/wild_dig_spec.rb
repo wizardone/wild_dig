@@ -54,6 +54,12 @@ RSpec.describe WildDig do
     }
   end
 
+  let(:hash_7) do
+    {
+      a: { b: 'b'}
+    }
+  end
+
   it 'digs regularly' do
     expect(WildDig.dig(hash_1, :a, :b, :d)).to eq('d')
     expect(WildDig.dig(hash_1, :a, :b)).to eq(d: 'd', e: 'e')
@@ -75,5 +81,9 @@ RSpec.describe WildDig do
   it 'digs wildly through array with multiple objects' do
     expect(WildDig.dig(hash_5, :b, :*, :d)).to eq(['d1', 'd2', 'd3'])
     expect(WildDig.dig(hash_6, :b, :*, :d)).to eq(['d1', 'd3'])
+  end
+
+  it 'digs wildly and returns the last wildcard element' do
+    expect(WildDig.dig(hash_7, :a, :*)).to eq('b')
   end
 end

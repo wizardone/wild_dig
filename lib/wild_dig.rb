@@ -14,7 +14,7 @@ module WildDig
 
     current_key = keys.shift
     if current_key == WILDCARD
-      wildcard(new_collection, current_key, keys)
+      wildcard(new_collection, keys)
     else
       normal(new_collection, current_key, keys)
     end
@@ -22,12 +22,10 @@ module WildDig
 
   private
 
-  def wildcard(collection, current_key, keys)
+  def wildcard(collection, keys)
     if keys.empty?
-      collection.map { |key, value| value }
+      collection.map { |key, value| value }.first
     else
-      # Find a way to transform the collection here
-      # Unify a hash and array for iteration
       if collection.is_a?(Hash)
         collection.map { |key, value| dig(value, *keys) }.first
       elsif collection.is_a?(Array)
@@ -55,7 +53,7 @@ module WildDig
     when Array
       collection.map { |el| deep_clone(el) }
     else
-      raise 'What are you doing?'
+      raise ArgumentError
     end
   end
 end
