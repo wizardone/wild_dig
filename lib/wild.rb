@@ -22,15 +22,11 @@ module Wild
   private
 
   def wildcard(collection, keys)
-    if keys.empty?
-      collection.map { |_key, value| value }.first
-      #collection
-    else
-      if collection.is_a?(Hash)
-        collection.map { |_key, value| dig(value, *keys) }.first
-      elsif collection.is_a?(Array)
-        collection.map { |key, _value| dig(key, *keys) }.reject(&:nil?)
-      end
+    return collection if keys.empty?
+    if collection.is_a?(Hash)
+      collection.map { |_key, value| dig(value, *keys) }.first
+    elsif collection.is_a?(Array)
+      collection.map { |key, _value| dig(key, *keys) }.reject(&:nil?)
     end
   end
 

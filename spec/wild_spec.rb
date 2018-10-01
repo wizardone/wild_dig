@@ -57,8 +57,8 @@ RSpec.describe Wild do
   let(:hash_7) do
     {
       # TODO Fix this case, what do we have to return here?
-      #a: { b: 'b'},
-      a: { b: 'b', c: 'c' },
+      c: [1, 2, 3],
+      a: { b: 'b', e: 'e' },
       z: 'z'
     }
   end
@@ -87,7 +87,8 @@ RSpec.describe Wild do
   end
 
   it 'digs wildly and returns the last wildcard element' do
-    expect(Wild.dig(hash_7, :a, :*)).to eq('b')
+    expect(Wild.dig(hash_7, :a, :*)).to eq({ b: 'b', e: 'e' })
+    expect(Wild.dig(hash_7, :c, :*)).to eq([1,2,3])
     expect(Wild.dig(hash_7, :z, :*)).to eq('z')
   end
 end
