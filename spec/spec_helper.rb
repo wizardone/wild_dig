@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "wild_dig"
+require "wild"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -1,7 +1,7 @@
-require 'wild_dig/version'
+require 'wild/version'
 require 'byebug'
 
-module WildDig
+module Wild
 
   WILDCARD = :*.freeze
   extend self

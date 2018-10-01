@@ -1,10 +1,10 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "wild_dig/version"
+require "wild/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "wild_dig"
-  spec.version       = WildDig::VERSION
+  spec.version       = Wild::VERSION
   spec.authors       = ["Stefan Slaveykov"]
   spec.email         = ["stefan.slaveykov@youdo.co.nz"]
 
