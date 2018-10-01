@@ -2,8 +2,7 @@ require 'wild/version'
 require 'byebug'
 
 module Wild
-
-  WILDCARD = :*.freeze
+  WILDCARD = :*
   extend self
 
   def dig(collection, *keys)
@@ -24,10 +23,11 @@ module Wild
 
   def wildcard(collection, keys)
     if keys.empty?
-      collection.map { |key, value| value }.first
+      collection.map { |_key, value| value }.first
+      #collection
     else
       if collection.is_a?(Hash)
-        collection.map { |key, value| dig(value, *keys) }.first
+        collection.map { |_key, value| dig(value, *keys) }.first
       elsif collection.is_a?(Array)
         collection.map { |key, _value| dig(key, *keys) }.reject(&:nil?)
       end
