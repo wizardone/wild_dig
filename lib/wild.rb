@@ -26,7 +26,7 @@ module Wild
     if collection.is_a?(Hash)
       collection.map { |_key, value| dig(value, *keys) }.first
     elsif collection.is_a?(Array)
-      collection.map { |key, _value| dig(key, *keys) }.reject(&:nil?)
+      collection.map { |key, _value| dig(key, *keys) }#.reject(&:nil?)
     end
   end
 
